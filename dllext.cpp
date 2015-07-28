@@ -638,8 +638,8 @@ static size_t ListFileHeader(wchar *wcs,Archive &Arc)
   if (hd.UnpSize==INT64NDF)
     wcscpy(UnpSizeText,L"?");
   else
-    itoa(hd.UnpSize,UnpSizeText);
-  itoa(hd.PackSize,PackSizeText);
+    itoa(hd.UnpSize,UnpSizeText,ASIZE(UnpSizeText));
+  itoa(hd.PackSize,PackSizeText,ASIZE(PackSizeText));
 
   wchar AttrStr[30];
   ListFileAttr(hd.FileAttr,hd.HSType,AttrStr,ASIZE(AttrStr));
@@ -658,7 +658,7 @@ static size_t ListFileHeader(wchar *wcs,Archive &Arc)
         swprintf(RatioStr,ASIZE(RatioStr),L"%d%%",ToPercentUnlim(hd.PackSize,hd.UnpSize));
 
   wchar DateStr[50];
-  hd.mtime.GetText(DateStr,ASIZE(DateStr),true,true);
+  hd.mtime.GetText(DateStr,ASIZE(DateStr),true);
   wcs += msprintf(wcs, L"\n%12s: %s",St(MListName),Name);
   bool FileBlock=hd.HeaderType==HEAD_FILE;
 
@@ -716,12 +716,12 @@ static size_t ListFileHeader(wchar *wcs,Archive &Arc)
     wcs += msprintf(wcs, L"\n%12ls: %ls",St(MListMtime),DateStr);
   if (hd.ctime.IsSet())
   {
-    hd.ctime.GetText(DateStr,ASIZE(DateStr),true,true);
+    hd.ctime.GetText(DateStr,ASIZE(DateStr),true);
     wcs += msprintf(wcs, L"\n%12ls: %ls",St(MListCtime),DateStr);
   }
   if (hd.atime.IsSet())
   {
-    hd.atime.GetText(DateStr,ASIZE(DateStr),true,true);
+    hd.atime.GetText(DateStr,ASIZE(DateStr),true);
     wcs += msprintf(wcs, L"\n%12ls: %ls",St(MListAtime),DateStr);
   }
   wcs += msprintf(wcs, L"\n%12ls: %ls",St(MListAttr),AttrStr);
